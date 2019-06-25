@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Data
@@ -16,7 +18,11 @@ public class Usuario {
     @Id
     @GeneratedValue
     private Integer id;
+    @NotEmpty(message = "El usuario debe tener nombre")
+    @NotBlank(message = "El usuario debe tener nombre")
     private String nombre;
+    @NotEmpty(message = "El usuario debe tener apellido")
+    @NotBlank(message = "El usuario debe tener apellido")
     private String apellido;
     private String browser;
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "usuario")

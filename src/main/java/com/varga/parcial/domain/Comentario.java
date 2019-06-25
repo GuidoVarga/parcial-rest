@@ -7,8 +7,12 @@ import lombok.NoArgsConstructor;
 import org.apache.tomcat.jni.Local;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Objects;
 
@@ -20,11 +24,10 @@ public class Comentario {
     @Id
     @GeneratedValue
     private Integer id;
+    @NotEmpty(message = "El comentario debe tener descripcion")
+    @NotBlank(message = "El usuario debe tener descripcion")
     private String descripcion;
-    private LocalDateTime fecha;
-    //@ManyToOne(fetch = FetchType.EAGER)
-    //@JoinColumn(name = "usuario_id", referencedColumnName = "id")
-    //@JsonIgnore
+    private String fecha;
     private String owner;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "publicacion_id", referencedColumnName = "id")
@@ -34,7 +37,8 @@ public class Comentario {
     @PrePersist
     public void createFecha(){
         if(Objects.isNull(this.getFecha())){
-            this.fecha = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            this.fecha = formatter.format(LocalDate.now());
         }
     }
 

@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
@@ -32,7 +33,7 @@ public class PublicacionController {
     }
 
     @PostMapping("/usuarios/{id}")
-    public void addPublicacion(@PathVariable("id")Integer id, @RequestBody Publicacion publicacion){
+    public void addPublicacion(@PathVariable("id")Integer id, @RequestBody @NotNull Publicacion publicacion){
         Usuario usuario = uRepository.findById(id).orElseThrow(() -> new HttpClientErrorException(HttpStatus.BAD_REQUEST));
         usuario.getPublicaciones().add(publicacion);
         publicacion.setUsuario(usuario);

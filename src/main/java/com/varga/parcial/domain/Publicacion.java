@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -25,7 +27,7 @@ public class Publicacion {
     private Integer id;
     private String descripcion;
     private String foto;
-    private LocalDateTime fechaPublicacion;
+    private String fechaPublicacion;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usuario_id", referencedColumnName = "id")
     @JsonIgnore
@@ -37,7 +39,9 @@ public class Publicacion {
     @PrePersist
     public void createFecha(){
         if(Objects.isNull(this.getFechaPublicacion())){
-            fechaPublicacion = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
+
+            fechaPublicacion = formatter.format(LocalDate.now());
         }
     }
 

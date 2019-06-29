@@ -1,22 +1,24 @@
 package com.varga.parcial.controller;
 
-import com.varga.parcial.domain.Publicacion;
+import com.varga.parcial.domain.PublicacionesByUsuario;
 import com.varga.parcial.domain.Usuario;
+import com.varga.parcial.repository.PublicacionesByUsuarioRepository;
+import com.varga.parcial.repository.PublicacionesPorUsuario;
 import com.varga.parcial.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("usuarios")
 public class UsuarioController {
     @Autowired
     UsuarioRepository uRepository;
+    @Autowired
+    PublicacionesByUsuarioRepository pbuRepository;
 
     @GetMapping("")
     public List<Usuario> getUsuarios(){
@@ -48,6 +50,11 @@ public class UsuarioController {
     public void deleteUsuario(@PathVariable("id") Integer id){
         Usuario usuario = uRepository.findById(id).orElseThrow(() -> new HttpClientErrorException(HttpStatus.BAD_REQUEST));
         uRepository.delete(usuario);
+    }
+
+    @GetMapping("/publicaciones")
+    public List<PublicacionesByUsuario> getPublicaciones(){
+        return pbuRepository.getPublicacionesPorUsuario();
     }
     
 }
